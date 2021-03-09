@@ -1,0 +1,15 @@
+{
+  "name": "jd-yushou",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cron": "^1.8.2",
+    "dayjs": "^1.10.4",
+    "puppeteer": "^8.0.0"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0"
+  }
+}

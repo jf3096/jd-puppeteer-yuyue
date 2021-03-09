@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link type="text/css" rel="stylesheet"
+    href="https://wq.360buyimg.com/wxsq_item_search/search/search_m/css/msearch.753d00f6.css"
+    onerror="__reloadResource(this)">
+  <link type="text/css" rel="stylesheet"
+    href="https://wq.360buyimg.com/wxsq_item_search/search/static_css_include/style/search_m_smartbox.423d649d.css"
+    onerror="__reloadResource(this)">
+</head>
+
+<body>
+  <div class="search_prolist cols_1" id="itemList">
+    {content}
+  </div>
+  <script src="https://zhcdn01.xoyo.com/xassets/lib/jquery/1.7.2/jquery.min.js" crossorigin="anonymous"></script>
+  <script>
+    $('.search_prolist_cover').on('click', function () {
+      const skuid = $(this).parent().parent().attr('skuid');
+      window.location.href = `https://p.m.jd.com/norder/order.action?wareId=${skuid}&wareNum=1&enterOrder=true`;
+    });
+
+    $('.search_prolist_info').on('click', function () {
+      debugger;
+      const tourl = $(this).parent().attr('tourl');
+      window.location.href = tourl;
+    });
+  </script>
+</body>
+
+</html>
