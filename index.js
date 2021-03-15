@@ -2,6 +2,8 @@ const puppeteer = require("puppeteer");
 const iPhone = puppeteer.devices["iPhone 6"];
 const fs = require("fs");
 const day = require("dayjs");
+const cheerio = require("cheerio");
+const fetchStartTime = require("./src/fetch-start-time");
 
 Date.prototype.getBJDate = function () {
   //获得当前运行环境时间
@@ -24,7 +26,7 @@ Date.prototype.getBJDate = function () {
 
 const starter = async () => {
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
     isMobile: true,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
@@ -52,7 +54,7 @@ const starter = async () => {
         });
       });
 
-      if (result > 1000) {
+      if (result > 100) {
         counter = 0;
         return await scroll();
       }
@@ -76,18 +78,32 @@ const starter = async () => {
         ),
         (a) => {
           var haha = $(a).parents(".search_prolist_item");
-          debugger;
           var result = $("<div />").append(haha).html();
           return result;
         }
       ).join("");
     });
 
+    const $ = cheerio.load(domString);
+
+    const skuidArray = $('.search_prolist_item').map((key, item) => item.attribs.skuid).toArray();
+
+    const skuArray = await Promise.all(skuidArray.map(async (skuid) => {
+      return {
+        skuid,
+        yuyueTime: await fetchStartTime(skuid)
+      };
+    }));
+
+    const skuidCssArray = skuArray.map(({ skuid, yuyueTime }) => `#price_${skuid}:after { content: '(${yuyueTime})'; opacity: .8; }`)
+
     const html = fs
       .readFileSync("index.html")
       .toString()
+      .replace("/* {style} */", skuidCssArray.join('\n'))
       .replace("{content}", domString);
 
+    fs.writeFileSync('build/skuids/skuids.js', `SKUIDS_CALLBACK(${JSON.stringify(skuArray)})`);
     fs.writeFileSync(`build/${day().format("YYYY-MM-DD HH_mm_ss")}.html`, html);
   } finally {
     await browser.close();

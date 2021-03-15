@@ -11,6 +11,9 @@
   <link type="text/css" rel="stylesheet"
     href="https://wq.360buyimg.com/wxsq_item_search/search/static_css_include/style/search_m_smartbox.423d649d.css"
     onerror="__reloadResource(this)">
+  <style>
+    /* {style} */
+  </style>
 </head>
 
 <body>
@@ -19,15 +22,65 @@
   </div>
   <script src="https://zhcdn01.xoyo.com/xassets/lib/jquery/1.7.2/jquery.min.js" crossorigin="anonymous"></script>
   <script>
+    $.fn.longpress = function(time, onlongpress)
+    {
+      var timestart = 0;
+      var timer = null;
+
+      //If time wasn't specified
+      if (!onlongpress)
+      {
+        onlongpress = time;
+        time = 2000; //Default long-press time
+      }
+
+      //When the mouse is down start checking the time
+      $(this).on( 'mousedown', function( e )
+      {
+        timestart = new Date().getTime();
+        checktime();
+      });
+
+      //Check to see how much time has passed
+      var checktime = function()
+      {
+        if ( new Date().getTime() >= ( timestart + time )  )
+        {
+          if (typeof onlongpress == 'function')
+          {
+            //Fire the callback
+            onlongpress();
+          }
+        }
+        else
+        {
+          // Keep checking
+          timer = setTimeout(checktime, 1);
+        }
+      }
+
+      $(this).on( 'mouseleave mouseup', function( e )
+      {
+        //Stop checking if the mouse is up too early or the mouse leaves the element
+        timestart = 0;
+        clearTimeout(timer);
+      });
+    };
+  </script>
+  <script>
     $('.search_prolist_cover').on('click', function () {
       const skuid = $(this).parent().parent().attr('skuid');
       window.location.href = `https://p.m.jd.com/norder/order.action?wareId=${skuid}&wareNum=1&enterOrder=true`;
     });
 
     $('.search_prolist_info').on('click', function () {
-      debugger;
       const tourl = $(this).parent().attr('tourl');
       window.location.href = tourl;
+    });
+
+    $('.search_prolist_item').longpress(3000, function() {
+      const skuid = $(this).eq(0).find("[skuid]").attr('skuid');
+      alert(skuid);
     });
   </script>
 </body>
