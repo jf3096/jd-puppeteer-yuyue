@@ -7,14 +7,12 @@
     "test:server": "http-server build -c-1 --cors"
   },
   "dependencies": {
-    "axios": "^0.21.1",
-    "cheerio": "^1.0.0-rc.5",
-    "cron": "^1.8.2",
-    "dayjs": "^1.10.4",
-    "moment": "^2.29.1",
-    "puppeteer": "^8.0.0"
-  },
-  "devDependencies": {
-    "@types/axios": "^0.14.0"
+    "moment": "2.29.1",
+    "axios": "0.21.1",
+    "cheerio": "1.0.0-rc.5",
+    "cron": "1.8.2",
+    "dayjs": "1.10.4",
+    "puppeteer": "8.0.0",
+    "http-server": "0.12.3"
   }
 }
