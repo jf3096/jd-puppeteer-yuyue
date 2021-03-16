@@ -4,6 +4,7 @@ const fs = require("fs");
 const day = require("dayjs");
 const cheerio = require("cheerio");
 const fetchStartTime = require("./src/fetch-start-time");
+const moment = require("moment");
 
 Date.prototype.getBJDate = function () {
   //获得当前运行环境时间
@@ -88,14 +89,18 @@ const starter = async () => {
 
     const skuidArray = $('.search_prolist_item').map((key, item) => item.attribs.skuid).toArray();
 
-    const skuArray = await Promise.all(skuidArray.map(async (skuid) => {
+    let skuArray = await Promise.all(skuidArray.map(async (skuid) => {
       return {
         skuid,
         yuyueTime: await fetchStartTime(skuid)
       };
     }));
 
-    const skuidCssArray = skuArray.map(({ skuid, yuyueTime }) => `#price_${skuid}:after { content: '(${yuyueTime})'; opacity: .8; }`)
+    skuArray = skuArray.sort(({ yuyueTime }, { yuyueTime: nextYuyueTime }) => {
+      return moment(yuyueTime, 'YYYY-MM-DD HH:mm:ss').unix() - moment(nextYuyueTime, 'YYYY-MM-DD HH:mm:ss').unix();
+    });
+
+    const skuidCssArray = skuArray.map(({ skuid, yuyueTime }, order) => `#price_${skuid}:after { content: '(${yuyueTime})'; opacity: .8; } .search_prolist_item[skuid="${skuid}"] { order: ${order} }`)
 
     const html = fs
       .readFileSync("index.html")
