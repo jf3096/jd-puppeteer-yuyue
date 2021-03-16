@@ -26,7 +26,7 @@ Date.prototype.getBJDate = function () {
 
 const starter = async () => {
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     isMobile: true,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
