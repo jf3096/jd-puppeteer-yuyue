@@ -16,6 +16,10 @@ git clone https://github.com/jf3096/jd-puppeteer-yuyue.git --depth=1
 cd jd-puppeteer-yuyue
 npm install (推荐 npm, 因为我配置了 .npmrc)
 
+# 这个是执行爬虫的主程序
+node index
+
+# 另外开一个 terminal, 这个起一个 server, 用于 build 文件夹的访问
 npm run test:server
 
 # 此时, 首次会执行 puppeteer 进行页面数据爬取
