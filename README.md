@@ -14,8 +14,7 @@
 ```bash
 git clone https://github.com/jf3096/jd-puppeteer-yuyue.git --depth=1
 cd jd-puppeteer-yuyue
-# yarn 也可以 (需要 nodejs 环境)
-npm install
+npm install (推荐 npm, 因为我配置了 .npmrc)
 
 npm run test:server
 
