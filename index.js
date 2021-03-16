@@ -54,7 +54,7 @@ const starter = async () => {
         });
       });
 
-      if (result > 100) {
+      if (result > 1000) {
         counter = 0;
         return await scroll();
       }
